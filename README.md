@@ -19,6 +19,5 @@ Caution:
 
 ## To do
 - Create a script that automatically generates inputs for the benchmarks that load them from disk.
-- Create a script that runs one of the benchmarks.
 
 Contact: Paul Metzger, paul.felix.metzger@googlemail.com
