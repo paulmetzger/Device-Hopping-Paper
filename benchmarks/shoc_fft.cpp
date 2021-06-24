@@ -263,7 +263,7 @@ bool verify_results(cplxflt *b, cplxflt *reference, unsigned long b_size, size_t
     plasticity::cl_utils::cl_check_return_code(err, "Could not initialise the OpenCL context");
 
     // Load and compile the .cl file
-    std::string cl_file_path = REPOSITORY_PATH + "/library/" + "/plasticity/opencl_files/shoc_fft.cl";
+    std::string cl_file_path = REPOSITORY_PATH + "/benchmarks/shoc_src/shoc_fft.cl";
     FILE *program_handle = fopen(cl_file_path.c_str(), "r");
     if (program_handle == NULL) {
         std::cerr << "Error: Could not open the OpenCL source code file" << std::endl;

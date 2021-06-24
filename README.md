@@ -4,7 +4,9 @@ This repository contains the parallel_for library and source-to-source translato
 
 The build.sh script creates a directory for build files, generates migratable CUDA, OpenCL, and OpenMP code from the high-level benchmark implementations with our parallel_for, builds the benchmarks, and sets up IPC.
 
-Caution: The build script creates files in /dev/shm for IPC.
+Caution:
+- The build script creates files in /dev/shm for IPC.
+- One some installation the message queue size has to be changed with echo 1048576 > /proc/sys/fs/mqueue/msgsize_max
 
 ## Directory structure
 | Directory | Description |
