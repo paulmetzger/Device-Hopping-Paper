@@ -18,6 +18,6 @@ cd ../cmake-build-debug
 cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_BENCHMARKS=True ..
 make -j`nproc`
 
-# Setup IPC
+# Set up IPC
 ./utils/destroy_ipc
 ./utils/init_ipc
