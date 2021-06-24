@@ -35,6 +35,5 @@ WARNING: run_daemon.sh kills all processes that start with "plasticd" and delete
 
 ## To do
 - Create a script that automatically generates inputs for the benchmarks that load them from disk.
-- 
 
 Contact: Paul Metzger, paul.felix.metzger@googlemail.com
