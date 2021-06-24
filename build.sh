@@ -1,4 +1,12 @@
 #!/bin/sh
+# Check if ICC is installed
+which icc
+if [ $? -ne 0 ] ;
+then
+  echo "Error: icc is not installed."
+  exit
+fi
+
 # Set environment variable
 export PLASTICITY_ROOT=`pwd`/
 echo $PLASTICITY_ROOT
