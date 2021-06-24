@@ -24,7 +24,17 @@ Monitor the output of run_daemon.sh. The outputs of the benchmarks will appear h
 
 WARNING: run_daemon.sh kills all processes that start with "plasticd" and deletes and creates files in /dev/shm for IPC.
 
+## Dependencies
+- Boost libraries:
+  - asio/ip/host_name
+  - crc
+  - program_options 
+  - special_functions/next.hpp
+- CUDA
+- Intel's C/C++ compiler (ICC).
+
 ## To do
 - Create a script that automatically generates inputs for the benchmarks that load them from disk.
+- 
 
 Contact: Paul Metzger, paul.felix.metzger@googlemail.com
