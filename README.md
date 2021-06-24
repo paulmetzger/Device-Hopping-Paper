@@ -18,11 +18,11 @@ Caution:
 | utils | Utilities, that, among other things, set up IPC and generate inputs for Rodinia NN and SHOC SPMV. |
 
 ## Usage
-The scripts run_benchmarks.sh and run_daemon.sh illustrate how to use the daemon.
+The scripts run_benchmarks.sh and run_daemon.sh illustrate how to use the daemon with the SHOC FFT benchmark.
 First start the daemon with run_daemon.sh and then the benchmarks with run_benchmarks.sh.
-Monitor the output of run_daemon.sh. The outputs of the benchmarks will appear there because they are run by the daemon.
+Monitor the output of run_daemon.sh. The outputs of the benchmarks will appear here because they are run by the daemon.
 
-WARNING: run_daemon kills all processes that start with "plasticd" and it will delete and create files in /dev/shm for IPC.
+WARNING: run_daemon.sh kills all processes that start with "plasticd" and deletes and creates files in /dev/shm for IPC.
 
 ## To do
 - Create a script that automatically generates inputs for the benchmarks that load them from disk.
