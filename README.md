@@ -17,6 +17,13 @@ Caution:
 | source_to_source_translator | Source code of the translator. |
 | utils | Utilities, that, among other things, set up IPC and generate inputs for Rodinia NN and SHOC SPMV. |
 
+## Usage
+The scripts run_benchmarks.sh and run_daemon.sh illustrate how to use the daemon.
+First start the daemon with run_daemon.sh and then the benchmarks with run_benchmarks.sh.
+Monitor the output of run_daemon.sh. The outputs of the benchmarks will appear there because they are run by the daemon.
+
+WARNING: run_daemon kills all processes that start with "plasticd" and it will delete and create files in /dev/shm for IPC.
+
 ## To do
 - Create a script that automatically generates inputs for the benchmarks that load them from disk.
 
