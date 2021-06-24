@@ -1,0 +1,76 @@
+cmake_minimum_required(VERSION 2.8)
+#set(CMAKE_VERBOSE_MAKEFILE ON)
+
+execute_process(COMMAND icc RESULT_VARIABLE icc_res OUTPUT_FILE /dev/null ERROR_FILE /dev/null)
+if(NOT "${icc_res}" STREQUAL "No such file or directory")
+    message("ICC Found")
+    set(CMAKE_C_COMPILER icc)
+    set(CMAKE_CXX_COMPILER icpc)
+else()
+    message("WARNING: Could not find ICC! Will use GCC instead.")
+endif()
+
+project(plasticity LANGUAGES CXX C CUDA)
+cmake_policy(SET CMP0048 NEW)
+find_package(PkgConfig REQUIRED)
+
+set(BOOST_ROOT "$ENV{HOME}/local")
+find_package(Boost COMPONENTS REQUIRED program_options iostreams system)
+
+if (NOT "${icc_res}" STREQUAL "No such file or directory")
+    set(OPENMP_LIB iomp5)
+else()
+    set(OPENMP_LIB gomp)
+endif()
+
+if (NOT "${icc_res}" STREQUAL "No such file or directory")
+    message("Set ICC library dependencies")
+    set(INTEL_LIBRARY_DEPENDENCIES irc)
+endif()
+
+find_package (CUDA 10.0 REQUIRED)
+if(NOT "${icc_res}" STREQUAL "No such file or directory")
+    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -ccbin=icc -Xcompiler=\"-qopenmp\" -Xcompiler=\"-O3\" -Xlinker=\"-liomp5\" -Xlinker=\"-lintlc\" -Xcompiler=\"-fPIC\"") #[[Use ICC]] #-Xcompiler=\"-fPIC\"
+else()
+    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -Xptxas -v -Xcompiler=\"-fopenmp\" -Xlinker=\"-lgomp\"")  #[[Use GCC]]
+endif()
+set(CMAKE_CUDA_FLAGS_DEBUG "${CMAKE_CUDA_FLAGS_DEBUG} -DDEBUG")
+
+
+find_package(OpenCL)
+if (NOT OpenCL_FOUND)
+    message("Could not find OpenCL automatically")
+    message("Attempt to set OpenCL paths manually")
+    if (EXISTS "/usr/lib64/" AND EXISTS "$ENV{HOME}/local/include/CL/")
+        set(OpenCL_INCLUDE_DIR "$ENV{HOME}/local/include/CL/")
+        set(OpenCL_LIB_DIR "/usr/lib64/")
+        message("Set OpenCL paths manually")
+    else()
+        message( FATAL_ERROR "Could not locate OpenCL include & libs" )
+    endif()
+endif()
+
+#if( OPENCL_INCLUDE_DIRS STREQUAL "" OR OPENCL_LIBRARIES STREQUAL "")
+#    message( FATAL_ERROR "Could not locate OpenCL include & libs" )
+#endif()
+
+find_package(OpenMP REQUIRED)
+if (OPENMP_FOUND)
+    set(CMAKE_C_FLAGS          "${CMAKE_C_FLAGS}          ${OpenMP_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS        "${CMAKE_CXX_FLAGS}        ${OpenMP_CXX_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+else()
+    message(FATAL_ERROR "Could not find OpenMP")
+endif()
+
+set(CMAKE_C_FLAGS           "${CMAKE_C_FLAGS}           -Wall -pedantic -Wno-deprecated -pthread")
+set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS}         -Wall -pedantic -Wno-deprecated -pthread")
+set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG}   -g -O0 -DDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g -O3 -DNDEBUG")
+
+message("Entering subdirectories")
+add_subdirectory(daemon)
+add_subdirectory(utils)
+if (BUILD_BENCHMARKS)
+    add_subdirectory(benchmarks)
+endif()
